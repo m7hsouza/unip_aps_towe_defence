@@ -10,6 +10,12 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 public class Editing extends GameScene implements SceneMethods {
+  private int[][] level;
+  private Tile selectedTile;
+  private int mouseX, mouseY, lastTileX, lastTileY;
+  private boolean drawSelected;
+  private final ToolBar toolBar;
+
   public Editing(Game game) {
     super(game);
 
@@ -17,90 +23,11 @@ public class Editing extends GameScene implements SceneMethods {
     loadDefaultLevel();
   }
 
-  private int[][] level;
-  private Tile selectedTile;
-  private int mouseX, mouseY, lastTileX, lastTileY;
-  private boolean drawSelected;
-  private ToolBar toolBar;
-
-  private int animationIndex;
-  private int tick;
-
-  public void setSelectedTile(Tile selectedTile) {
-    this.selectedTile = selectedTile;
-    drawSelected = true;
-  }
-
-  private void loadDefaultLevel() {
-    level = LoadSave.GetLevelData("new_level");
-  }
-
-  public void saveLevel() {
-    LoadSave.SaveLevel("new_level", level);
-    game.getPlaying().setLevel(level);
-  }
-
   @Override
   public void render(Graphics g) {
-    updateTick();
-
     drawLevel(g);
     toolBar.draw(g) ;
     drawSelectedTile(g);
-  }
-
-  private void updateTick() {
-    tick++;
-    if (tick >= 16) {
-      tick = 0;
-      animationIndex++;
-      if (animationIndex >= 4) {
-        animationIndex = 0;
-      }
-    }
-  }
-
-  private void drawLevel(Graphics g) {
-    for (int y = 0; y < level.length; y++) {
-      for (int x = 0; x < level[y].length; x++) {
-        int id = level[y][x];
-        if (isAnimation(id)) {
-          g.drawImage(getSpriteById(id, animationIndex), x * 32, y * 32, null);
-        } else
-          g.drawImage(getSpriteById(id), x * 32, y * 32, null);
-      }
-    }
-  }
-
-  private boolean isAnimation(int spriteID) {
-     return game.getTileManager().isSpriteAnimation(spriteID);
-  }
-
-  private BufferedImage getSpriteById(int id) {
-    return getGame().getTileManager().getSprite(id);
-  }
-  private BufferedImage getSpriteById(int id, int animationIndex) {
-    return getGame().getTileManager().getAnimationSprite(id, animationIndex);
-  }
-
-  private void drawSelectedTile(Graphics g) {
-    if (selectedTile != null && drawSelected) {
-      g.drawImage(selectedTile.getSprite(), mouseX, mouseY, 32, 32, null);
-    }
-  }
-
-  private void changeTile(int x, int y) {
-    if (selectedTile != null) {
-      int tileX = x / 32;
-      int tileY = y / 32;
-
-      if (lastTileX == tileX && lastTileY == tileY) return;
-
-      lastTileX = tileX;
-      lastTileY = tileY;
-
-      level[tileY][tileX] = selectedTile.getId();
-    }
   }
 
   @Override
@@ -145,5 +72,67 @@ public class Editing extends GameScene implements SceneMethods {
   public void keyPressed(KeyEvent e) {
     if(e.getKeyCode() == KeyEvent.VK_R)
       toolBar.rotateSprite();
+  }
+
+  public void setSelectedTile(Tile selectedTile) {
+    this.selectedTile = selectedTile;
+    drawSelected = true;
+  }
+
+  public void saveLevel() {
+    LoadSave.SaveLevel("new_level", level);
+    game.getPlaying().setLevel(level);
+  }
+
+  public void update() {
+    updateTick();
+  }
+
+  private void loadDefaultLevel() {
+    level = LoadSave.GetLevelData("new_level");
+  }
+
+  private void drawLevel(Graphics g) {
+    for (int y = 0; y < level.length; y++) {
+      for (int x = 0; x < level[y].length; x++) {
+        int id = level[y][x];
+        if (isAnimation(id)) {
+          g.drawImage(getSpriteById(id, animationIndex), x * 32, y * 32, null);
+        } else
+          g.drawImage(getSpriteById(id), x * 32, y * 32, null);
+      }
+    }
+  }
+
+  private boolean isAnimation(int spriteID) {
+     return game.getTileManager().isSpriteAnimation(spriteID);
+  }
+
+  private BufferedImage getSpriteById(int id) {
+    return getGame().getTileManager().getSprite(id);
+  }
+
+  private BufferedImage getSpriteById(int id, int animationIndex) {
+    return getGame().getTileManager().getAnimationSprite(id, animationIndex);
+  }
+
+  private void drawSelectedTile(Graphics g) {
+    if (selectedTile != null && drawSelected) {
+      g.drawImage(selectedTile.getSprite(), mouseX, mouseY, 32, 32, null);
+    }
+  }
+
+  private void changeTile(int x, int y) {
+    if (selectedTile != null) {
+      int tileX = x / 32;
+      int tileY = y / 32;
+
+      if (lastTileX == tileX && lastTileY == tileY) return;
+
+      lastTileX = tileX;
+      lastTileY = tileY;
+
+      level[tileY][tileX] = selectedTile.getId();
+    }
   }
 }

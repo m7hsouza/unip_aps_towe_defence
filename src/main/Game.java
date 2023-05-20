@@ -7,6 +7,15 @@ import scenes.*;
 import javax.swing.JFrame;
 
 public class Game extends JFrame implements Runnable {
+  private GameScreen gameScreen;
+
+  // Classes
+  private Render render;
+  private Menu menu;
+  private Playing playing;
+  private Settings settings;
+  private Editing editing;
+  private TileManager tileManager;
   public Game() {
     initClasses();
     createDefaultLevel();
@@ -19,54 +28,14 @@ public class Game extends JFrame implements Runnable {
 //    setResizable(false);
     setVisible(true);
   }
-  private GameScreen gameScreen;
-  private Thread gameThread;
-
-  private final double FPS_SET = 120.0;
-  private final double UPS_SET = 60.0;
-
-  // Classes
-  private Render render;
-  private Menu menu;
-  private Playing playing;
-  private Settings settings;
-  private Editing edit;
-
-  private TileManager tileManager;
-
-
-
-  private void start() {
-    gameThread = new Thread(this){};
-    gameThread.start();
-  }
-
-  private void initClasses() {
-    tileManager = new TileManager();
-    menu = new Menu(this);
-    render = new Render(this);
-    playing = new Playing(this);
-    gameScreen = new GameScreen(this);
-    settings = new Settings(this);
-    edit = new Editing(this);
-  }
-
-  private void updateGame() {
-  }
-
-  private void createDefaultLevel() {
-    int[] arr = new int[300];
-    for (int i : arr) {
-      arr[i] = 0;
-    }
-    LoadSave.CreateLevel("new_level", arr);
-  }
 
   @Override
   public void run() {
     long lastTimeCheck = System.currentTimeMillis();
 
+    double FPS_SET = 120.0;
     double timePerFrame = 1000000000 / FPS_SET;
+    double UPS_SET = 60.0;
     double timePerUpdate = 1000000000 / UPS_SET;
 
     long lastFrame = System.nanoTime();
@@ -100,6 +69,43 @@ public class Game extends JFrame implements Runnable {
     }
   }
 
+  private void start() {
+    Thread gameThread = new Thread(this) {
+    };
+    gameThread.start();
+  }
+
+  private void initClasses() {
+    tileManager = new TileManager();
+    menu = new Menu(this);
+    render = new Render(this);
+    playing = new Playing(this);
+    gameScreen = new GameScreen(this);
+    settings = new Settings(this);
+    editing = new Editing(this);
+  }
+
+  private void updateGame() {
+    switch (GameStates.gameStates) {
+      case PLAYING -> {
+        playing.update();
+      }
+      case MENU, SETTINGS -> {
+      }
+      case EDITING -> {
+        editing.update();
+      }
+    }
+  }
+
+  private void createDefaultLevel() {
+    int[] arr = new int[300];
+    for (int i : arr) {
+      arr[i] = 0;
+    }
+    LoadSave.CreateLevel("new_level", arr);
+  }
+
   // Get and Set
   public Render getRender() {
     return this.render;
@@ -117,8 +123,8 @@ public class Game extends JFrame implements Runnable {
     return playing;
   }
 
-  public Editing getEdit() {
-    return edit;
+  public Editing getEditing() {
+    return editing;
   }
 
   public TileManager getTileManager() {

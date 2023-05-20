@@ -12,7 +12,7 @@ public class KeyboardListener implements KeyListener {
     this.game = game;
   }
 
-  private Game game;
+  private final Game game;
 
   @Override
   public void keyTyped(KeyEvent e) {
@@ -22,7 +22,7 @@ public class KeyboardListener implements KeyListener {
   @Override
   public void keyPressed(KeyEvent e) {
     if(GameStates.gameStates == GameStates.EDITING) {
-      game.getEdit().keyPressed(e);
+      game.getEditing().keyPressed(e);
     }
   }
 

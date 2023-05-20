@@ -13,10 +13,7 @@ public class GameScreen extends JPanel {
     this.game = game;
     setPanelSize();
   }
-  private Game game;
-  private Dimension size;
-  private KeyboardListener keyboardListener;
-  private MyMouseListener mouseListener;
+  private final Game game;
 
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
@@ -24,15 +21,15 @@ public class GameScreen extends JPanel {
   }
 
   private void setPanelSize() {
-    size = new Dimension(640, 580);
+    Dimension size = new Dimension(640, 580);
     setMinimumSize(size);
     setPreferredSize(size) ;
     setMaximumSize(size);
   }
 
   public void initInputs() {
-    keyboardListener = new KeyboardListener(game);
-    mouseListener = new MyMouseListener(game);
+    KeyboardListener keyboardListener = new KeyboardListener(game);
+    MyMouseListener mouseListener = new MyMouseListener(game);
 
     addMouseListener(mouseListener);
     addMouseMotionListener(mouseListener);

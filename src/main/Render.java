@@ -11,21 +11,10 @@ public class Render {
   public void render(Graphics g) {
 
     switch (GameStates.gameStates) {
-      case MENU:
-        game.getMenu().render(g);
-        break;
-
-      case SETTINGS:
-        game.getSettings().render(g);
-        break;
-
-      case PLAYING:
-        game.getPlaying().render(g);
-        break;
-
-      case EDITING:
-        game.getEdit().render(g);
-        break;
+      case MENU -> game.getMenu().render(g);
+      case SETTINGS -> game.getSettings().render(g);
+      case PLAYING -> game.getPlaying().render(g);
+      case EDITING -> game.getEditing().render(g);
     }
 
   }
