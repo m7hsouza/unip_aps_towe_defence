@@ -45,4 +45,20 @@ public class ImgFix {
     return newImage;
   }
 
+  public static BufferedImage[] getBuildRotateImage(BufferedImage[] images, BufferedImage secondImage, int angle) {
+    int width = images[0].getWidth();
+    int height = images[0].getHeight();
+    BufferedImage[] newImages = new BufferedImage[images.length];
+    for (int i = 0; i < images.length; i++) {
+      BufferedImage newImage = new BufferedImage(width, height, images[0].getType());
+      Graphics2D g2d = newImage.createGraphics();
+      g2d.drawImage(images[i], 0, 0, null);
+      g2d.rotate(Math.toRadians(angle), (double) width / 2, (double) height / 2);
+      g2d.drawImage(secondImage, 0, 0, null);
+      g2d.dispose();
+      newImages[i] = newImage;
+    }
+    return newImages;
+  }
+
 }

@@ -22,7 +22,6 @@ public class ToolBar extends Bar {
 
   private Editing editing;
   private MyButton bMenu, bSave;
-//  private ArrayList<MyButton> tileButtons = new ArrayList<>();
   private Map<MyButton, ArrayList<Tile>> map = new HashMap<MyButton, ArrayList<Tile>>();
   private MyButton bGrass, bWater, bRoadS, bRoadC, bWaterC, bWaterB, bWaterI;
   private MyButton currentButton;
