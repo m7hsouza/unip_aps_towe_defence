@@ -1,17 +1,19 @@
 package enemies;
 
-import java.awt.Graphics;
+import helpz.Constants;
+
 import java.awt.Rectangle;
 
 import static helpz.Constants.Direction.*;
 
-public class Enemy {
-  private float x, y;
-  private Rectangle bounds;
-  private int health;
-  private final int ID;
-  private final int enemyType;
-  private int lastDirection;
+public abstract class Enemy {
+  protected float x, y;
+  protected Rectangle bounds;
+  protected float health, maxHealth;
+  protected final int ID;
+  protected  int enemyType;
+  protected int lastDirection;
+  protected boolean alive = true;
 
   public Enemy(float x, float y, int ID, int enemyType) {
     this.x = x;
@@ -19,7 +21,8 @@ public class Enemy {
     this.ID = ID;
     this.enemyType = enemyType;
     this.bounds = new Rectangle((int) x,(int) y, 32, 32);
-    lastDirection = RIGHT;
+    lastDirection = -1;
+    setStartHealth();
   }
 
   public void move(float speed, int direction) {
@@ -38,6 +41,21 @@ public class Enemy {
         this.y += speed;
       }
     }
+    updateHitBox();
+  }
+
+  private void updateHitBox() {
+    bounds.x = (int) x;
+    bounds.y = (int) y;
+  }
+
+  protected void setStartHealth() {
+    health = Constants.Enemies.GetStartHealth(enemyType);
+    maxHealth = health;
+  }
+
+  public float getHealthBar() {
+    return health / maxHealth;
   }
 
   public float getX() {
@@ -52,7 +70,7 @@ public class Enemy {
     return bounds;
   }
 
-  public int getHealth() {
+  public float getHealth() {
     return health;
   }
 
@@ -66,8 +84,18 @@ public class Enemy {
 
   public int getLastDirection() { return lastDirection; }
 
+  public boolean isAlive() {
+    return alive;
+  }
+
   public void setPosition(int x, int y) {
     this.x = x;
     this.y = y;
+  }
+
+  public void hurt(float damage) {
+    this.health -= damage;
+
+    if (health <= 0) alive = false;
   }
 }

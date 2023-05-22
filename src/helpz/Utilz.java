@@ -1,5 +1,6 @@
 package helpz;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Utilz {
@@ -24,6 +25,12 @@ public class Utilz {
       }
     }
     return oneArr;
+  }
+
+  public static float GetDistance(Point origin, Point target) {
+    float xDiff = Math.abs(target.x - origin.y);
+    float yDiff = Math.abs(target.y - origin.y);
+    return (float) Math.hypot(xDiff, yDiff);
   }
 
 }

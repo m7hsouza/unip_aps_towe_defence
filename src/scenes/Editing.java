@@ -2,12 +2,16 @@ package scenes;
 
 import helpz.LoadSave;
 import main.Game;
+import objects.PathPoint;
 import objects.Tile;
 import ui.ToolBar;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+import static helpz.Constants.Tiles.*;
 
 public class Editing extends GameScene implements SceneMethods {
   private int[][] level;
@@ -15,11 +19,12 @@ public class Editing extends GameScene implements SceneMethods {
   private int mouseX, mouseY, lastTileX, lastTileY;
   private boolean drawSelected;
   private final ToolBar toolBar;
+  private PathPoint start, end;
 
   public Editing(Game game) {
     super(game);
 
-    this.toolBar = new ToolBar(0, 480, 640, 100, this);
+    this.toolBar = new ToolBar(0, 480, 640, 140, this);
     loadDefaultLevel();
   }
 
@@ -28,6 +33,17 @@ public class Editing extends GameScene implements SceneMethods {
     drawLevel(g);
     toolBar.draw(g) ;
     drawSelectedTile(g);
+    drawPathPoints(g);
+  }
+
+  private void drawPathPoints(Graphics g) {
+    if (start != null) {
+      g.drawImage(toolBar.getPathStart(), start.getxCord() * 32, start.getyCord() * 32, 32, 32, null);
+    }
+
+    if (end != null) {
+      g.drawImage(toolBar.getPathEnd(), end.getxCord() * 32, end.getyCord() * 32, 32, 32, null);
+    }
   }
 
   @Override
@@ -80,7 +96,7 @@ public class Editing extends GameScene implements SceneMethods {
   }
 
   public void saveLevel() {
-    LoadSave.SaveLevel("new_level", level);
+    LoadSave.SaveLevel("new_level", level, start, end);
     game.getPlaying().setLevel(level);
   }
 
@@ -90,6 +106,10 @@ public class Editing extends GameScene implements SceneMethods {
 
   private void loadDefaultLevel() {
     level = LoadSave.GetLevelData("new_level");
+    ArrayList<PathPoint> points = LoadSave.GetLevelPathPoints("new_level");
+    assert points != null;
+    start = points.get(0);
+    end = points.get(1);
   }
 
   private void drawLevel(Graphics g) {
@@ -127,12 +147,22 @@ public class Editing extends GameScene implements SceneMethods {
       int tileX = x / 32;
       int tileY = y / 32;
 
-      if (lastTileX == tileX && lastTileY == tileY) return;
+      if (selectedTile.getId() >= 0) {
+        if (lastTileX == tileX && lastTileY == tileY) return;
+        lastTileX = tileX;
+        lastTileY = tileY;
+        level[tileY][tileX] = selectedTile.getId();
+      } else {
+         int id = level[tileY][tileX];
+         if (game.getTileManager().getTile(id).getType() == WATER_TILE) {
+           if (selectedTile.getType() == -1) {
+             start = new PathPoint(tileX, tileY);
+           } else {
+             end = new PathPoint(tileX, tileY);
+           }
+         }
+      }
 
-      lastTileX = tileX;
-      lastTileY = tileY;
-
-      level[tileY][tileX] = selectedTile.getId();
     }
   }
 }
