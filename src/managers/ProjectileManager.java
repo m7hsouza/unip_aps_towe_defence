@@ -7,6 +7,7 @@ import objects.Tower;
 import scenes.Playing;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -16,36 +17,65 @@ import static helpz.Constants.Projectiles.*;
 public class ProjectileManager {
   private Playing playing;
   private ArrayList<Projectile> projectiles = new ArrayList<>();
-  private BufferedImage[] projectileImages;
+  private BufferedImage[] projectileSprites, explosionSprites;
   private int amount = 0;
+  private boolean drawExplosion;
+  private int explosionTick, explosionIndex;
+  private Point2D.Float explosionPosition;
 
   public ProjectileManager(Playing playing) {
     this.playing = playing;
-    loadImages();
+    loadProjectileSprites();
   }
-  
-  private void loadImages() {
+
+  private void loadProjectileSprites() {
     BufferedImage atlas = LoadSave.getSpriteAtlas();
-    projectileImages = new BufferedImage[3];
+    projectileSprites = new BufferedImage[3];
     for (int i = 0; i < 3; i++) {
-      projectileImages[i] = atlas.getSubimage((7 + i) * 32, 32, 32, 32);
+      projectileSprites[i] = atlas.getSubimage((7 + i) * 32, 32, 32, 32);
+    }
+    loadExplosionSprites(atlas);
+  }
+
+  private void loadExplosionSprites(BufferedImage atlas) {
+    explosionSprites = new BufferedImage[7];
+    for (int i = 0; i < 7; i++) {
+      explosionSprites[i] = atlas.getSubimage(i * 32, 64, 32, 32);
     }
   }
 
+
   public void update() {
-    for (Projectile projectile : projectiles)
+    for (Projectile projectile : projectiles) {
       if (projectile.isActive()) {
         projectile.move();
         if (isHittingEnemy(projectile)) {
           projectile.setActive(false);
+          if (projectile.getType() == BOMB) {
+            drawExplosion = true;
+            explosionPosition = projectile.getPosition();
+          }
         }
       }
+    }
+    if (drawExplosion) {
+      explosionTick++;
+      if (explosionTick >= 12) {
+        explosionTick = 0;
+        explosionIndex++;
+        if (explosionIndex >= 7) {
+          explosionIndex = 0;
+          drawExplosion = false;
+        }
+      }
+    }
   }
 
   private boolean isHittingEnemy(Projectile projectile) {
     for (Enemy enemy : playing.getEnemyManager().getEnemies()) {
       if (enemy.getBounds().contains(projectile.getPosition())) {
         enemy.hurt(projectile.getDamage());
+        return true;
       }
     }
     return false;
@@ -55,16 +85,27 @@ public class ProjectileManager {
     Graphics2D g2d = (Graphics2D) g;
     for (Projectile projectile : projectiles) {
       if (projectile.isActive()) {
-        BufferedImage sprite = projectileImages[projectile.getType()];
+        BufferedImage sprite = projectileSprites[projectile.getType()];
         int x = (int) projectile.getPosition().x;
         int y = (int) projectile.getPosition().y;
-        g2d.translate(x, y);
-        g2d.rotate(Math.toRadians(projectile.getRotate()));
-        g2d.drawImage(sprite,-16 ,-16, null);
-        g2d.rotate(-Math.toRadians(projectile.getRotate()));
-        g2d.translate(-x, -y);
+        if (projectile.getType() == ARROW) {
+          g2d.translate(x, y);
+          g2d.rotate(Math.toRadians(projectile.getRotate()));
+          g2d.drawImage(sprite,-16 ,-16, null);
+          g2d.rotate(-Math.toRadians(projectile.getRotate()));
+          g2d.translate(-x, -y);
+        } else {
+          g2d.drawImage(sprite, x - 16, y - 16, null);
+        }
       }
+    }
+    drawExplosion(g2d);
+  }
 
+  private void drawExplosion(Graphics g) {
+    if (drawExplosion) {
+      BufferedImage currentSprite = explosionSprites[explosionIndex];
+      g.drawImage(currentSprite, (int) explosionPosition.x, (int) explosionPosition.y, null);
     }
   }
 
@@ -86,9 +127,12 @@ public class ProjectileManager {
     if (tower.getY() > enemy.getY())
       ySpeed *= -1;
 
-    float arcValue = (float) Math.atan(yDist / (float) xDist);
-    float rotate = (float) Math.toDegrees(arcValue);
-    if (xDist < 0) rotate += 180;
+    float rotate = 0;
+    if (type == ARROW) {
+      float arcValue = (float) Math.atan(yDist / (float) xDist);
+      rotate = (float) Math.toDegrees(arcValue);
+      if (xDist < 0) rotate += 180;
+    }
     projectiles.add(new Projectile(tower.getX() + 16, tower.getY() + 16, xSpeed, ySpeed, tower.getDamage(), rotate, amount++, type));
   }
 
@@ -97,7 +141,7 @@ public class ProjectileManager {
     switch (tower.getTowerType()) {
       case ARCHER -> type = ARROW;
       case WIZARD -> type = CHAINS;
-      case CANNON -> type = CANNON;
+      case CANNON -> type = BOMB;
     }
     return type;
   }

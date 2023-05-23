@@ -4,14 +4,14 @@ public abstract class Constants {
 
   public static abstract class Projectiles {
     public static final int ARROW = 0;
-    public static final int BOMB = 1;
-    public static final int CHAINS = 2;
+    public static final int CHAINS = 1;
+    public static final int BOMB = 2;
 
     public static float GetSpeed(int type) {
       float speed = 0;
       switch (type) {
-        case ARROW -> speed = 3f;
-        case BOMB -> speed = 2f;
+        case ARROW -> speed = 2f;
+        case BOMB -> speed = 0.5f;
         case CHAINS -> speed = 1f;
       }
       return speed;
@@ -71,25 +71,25 @@ public abstract class Constants {
     public static float GetStartDamage(int type) {
       float damge = 0;
       switch (type) {
-        case CANNON -> damge = 25.45f;
-        case ARCHER -> damge = 16.4f;
-        case WIZARD -> damge = 4.5f;
+        case CANNON -> damge = 0.5f;
+        case ARCHER -> damge = 1f;
+        case WIZARD -> damge = 1.8f;
       }
       return damge;
     }
     public static float GetStartRange(int type) {
       float range = 0;
       switch (type) {
-        case CANNON -> range = 90;
-        case ARCHER -> range = 105;
-        case WIZARD -> range = 120;
+        case CANNON -> range = 100;
+        case ARCHER -> range = 100;
+        case WIZARD -> range = 100;
       }
       return range;
     }
     public static float GetStartCoolDown(int type) {
       float coolDown = 0;
       switch (type) {
-        case CANNON -> coolDown = 8;
+        case CANNON -> coolDown = 20;
         case ARCHER -> coolDown = 12;
         case WIZARD -> coolDown = 10;
       }
