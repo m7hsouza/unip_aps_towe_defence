@@ -28,18 +28,10 @@ public abstract class Enemy {
   public void move(float speed, int direction) {
     lastDirection = direction;
     switch (direction) {
-      case RIGHT -> {
-        this.x += speed;
-      }
-      case LEFT -> {
-        this.x -= speed;
-      }
-      case UP -> {
-        this.y -= speed;
-      }
-      case DOWN -> {
-        this.y += speed;
-      }
+      case LEFT -> this.x -= speed;
+      case UP -> this.y -= speed;
+      case RIGHT -> this.x += speed;
+      case DOWN -> this.y += speed;
     }
     updateHitBox();
   }

@@ -37,7 +37,7 @@ public abstract class Constants {
     public static final int WOLF = 3;
 
     public static float GetEnemySpeed(int enemyType) {
-      float speed = 0.0f;
+      float speed = 0;
       switch (enemyType) {
         case ORC -> speed =  0.5f;
         case BAT -> speed = 0.65f;
