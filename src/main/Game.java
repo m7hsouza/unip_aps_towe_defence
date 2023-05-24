@@ -17,8 +17,8 @@ public class Game extends JFrame implements Runnable {
   private Editing editing;
   private TileManager tileManager;
   public Game() {
-    initClasses();
     createDefaultLevel();
+    initClasses();
 
     add(gameScreen);
     pack();
@@ -99,7 +99,7 @@ public class Game extends JFrame implements Runnable {
   }
 
   private void createDefaultLevel() {
-    int[] arr = new int[300];
+    int[] arr = new int[400];
     for (int i : arr) {
       arr[i] = 0;
     }

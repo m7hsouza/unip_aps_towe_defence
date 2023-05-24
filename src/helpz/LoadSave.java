@@ -69,7 +69,7 @@ public class LoadSave {
     File levelFile = new File(String.format("resources/%s.txt", filename));
     if (levelFile.exists()) {
       ArrayList<Integer> list = ReadFromFile(levelFile);
-      return Utilz.ArrayListTo2DInt(list, 20, 15);
+      return Utilz.ArrayListTo2DInt(list, 20, 20);
     } else {
       System.out.printf("File: %s does not exists! ", filename);
       return null;
@@ -83,7 +83,7 @@ public class LoadSave {
       while (sc.hasNextLine()) {
         list.add(Integer.parseInt(sc.nextLine()));
       }
-//      sc.close();
+      sc.close();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -95,8 +95,8 @@ public class LoadSave {
     if (levelFile.exists()) {
       ArrayList<Integer> list = ReadFromFile(levelFile);
       ArrayList<PathPoint> points = new ArrayList<>();
-      points.add(new PathPoint(list.get(300), list.get(301)));
-      points.add(new PathPoint(list.get(302), list.get(303)));
+      points.add(new PathPoint(list.get(400), list.get(401)));
+      points.add(new PathPoint(list.get(402), list.get(403)));
       return points;
     } else {
       System.out.printf("File: %s does not exists! ", filename);

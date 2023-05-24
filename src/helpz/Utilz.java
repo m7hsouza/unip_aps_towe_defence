@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Utilz {
 
-  public static int[][] ArrayListTo2DInt(ArrayList<Integer> list, int xSize, int ySize) {
+  public static int[][] ArrayListTo2DInt(ArrayList<Integer> list, int ySize, int xSize) {
     int[][] newArr = new int[ySize][xSize];
     for (int y = 0; y < newArr.length; y++) {
       for (int x = 0; x < newArr[y].length; x++) {
@@ -28,7 +28,7 @@ public class Utilz {
   }
 
   public static float GetDistance(Point origin, Point target) {
-    float xDiff = Math.abs(target.x - origin.y);
+    float xDiff = Math.abs(target.x - origin.x);
     float yDiff = Math.abs(target.y - origin.y);
     return (float) Math.hypot(xDiff, yDiff);
   }
