@@ -26,23 +26,21 @@ public abstract class Constants {
   }
 
   public static abstract class Tiles {
-    public static final int WATER_TILE = 0;
-    public static final int GRASS_TILE = 1;
-    public static final int ROAD_TILE = 2;
+    public static final int GRASS_TILE = 0;
+    public static final int ROAD_TILE = 1;
+    public static final int WATER_TILE = 2;
   }
   public static abstract class Enemies {
-    public static final int ORC = 0;
-    public static final int BAT = 1;
-    public static final int KNIGHT = 2;
-    public static final int WOLF = 3;
+    public static final int GARBAGE_BAG = 0;
+    public static final int PLASTIC_BOTTLE = 1;
+    public static final int GLASS_BOTTLE = 2;
 
     public static float GetEnemySpeed(int enemyType) {
       float speed = 0;
       switch (enemyType) {
-        case ORC -> speed =  0.5f;
-        case BAT -> speed = 0.65f;
-        case KNIGHT -> speed = 0.3f;
-        case WOLF -> speed = 0.75f;
+        case GARBAGE_BAG -> speed =  0.5f;
+        case PLASTIC_BOTTLE -> speed = 0.65f;
+        case GLASS_BOTTLE -> speed = 0.60f;
       }
       return speed;
     }
@@ -50,10 +48,9 @@ public abstract class Constants {
     public static float GetStartHealth(int enemyType) {
       float health = 0;
       switch (enemyType) {
-        case ORC -> health =  100;
-        case BAT -> health = 60;
-        case KNIGHT -> health = 250;
-        case WOLF -> health = 90;
+        case GARBAGE_BAG -> health =  250;
+        case PLASTIC_BOTTLE -> health = 150;
+        case GLASS_BOTTLE -> health = 100;
       }
       return health;
     }

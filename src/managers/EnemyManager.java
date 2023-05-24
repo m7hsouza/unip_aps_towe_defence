@@ -21,15 +21,16 @@ public class EnemyManager {
   private final PathPoint start, end;
   private float HPbarWidth = 20f;
 
+  int enemyCounter = 0;
+
   public EnemyManager(Playing playing, PathPoint start, PathPoint end) {
     this.playing = playing;
     this.start = start;
     this.end = end;
-    enemyImages = new BufferedImage[4];
-    addNewEnemy(ORC);
-    addNewEnemy(BAT);
-    addNewEnemy(KNIGHT);
-    addNewEnemy(WOLF);
+    enemyImages = new BufferedImage[3];
+    addNewEnemy(GARBAGE_BAG);
+    addNewEnemy(PLASTIC_BOTTLE);
+    addNewEnemy(GLASS_BOTTLE);
 
     loadEnemyImages();
   }
@@ -39,18 +40,17 @@ public class EnemyManager {
     int y = start.getyCord() * 32;
 
     switch (type) {
-      case ORC -> enemies.add(new Orc(x, y,0));
-      case BAT -> enemies.add(new Bat(x, y,0));
-      case KNIGHT -> enemies.add(new Knight(x, y,0));
-      case WOLF -> enemies.add(new Wolf(x, y,0));
+      case GARBAGE_BAG -> enemies.add(new GarbageBag(x, y, ++enemyCounter));
+      case PLASTIC_BOTTLE -> enemies.add(new PlasticBottle(x, y, ++enemyCounter));
+      case GLASS_BOTTLE -> enemies.add(new GlassBottle(x, y, ++enemyCounter));
     }
   }
 
   private void loadEnemyImages() {
     BufferedImage atlas = LoadSave.getSpriteAtlas();
 
-    for (int i = 0; i < 4; i++) {
-      enemyImages[i] = atlas.getSubimage(i * 32, 32, 32, 32);
+    for (int i = 0; i < 3; i++) {
+      enemyImages[i] = atlas.getSubimage(0, (i + 3) * 32, 32, 32);
     }
   }
 
@@ -142,7 +142,7 @@ public class EnemyManager {
     if (direction == UP) {
       return -GetEnemySpeed(enemyType);
     } else if (direction == DOWN) {
-      return GetEnemySpeed(enemyType);
+      return GetEnemySpeed(enemyType) + 32;
     }
     return 0;
   }

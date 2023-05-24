@@ -135,11 +135,13 @@ public class Playing extends GameScene implements SceneMethods {
   private void drawLevel(Graphics g) {
     for (int y = 0; y < level.length; y++) {
       for (int x = 0; x < level[y].length; x++) {
-        int id = level[y][x];
-        if (isAnimation(id)) {
-          g.drawImage(getSpriteById(id, animationIndex), x * 32, y * 32, null);
-        } else
-          g.drawImage(getSpriteById(id), x * 32, y * 32, null);
+        if (y < 15) {
+          int id = level[y][x];
+          if (isAnimation(id)) {
+            g.drawImage(getSpriteById(id, animationIndex), x * 32, y * 32, null);
+          } else
+            g.drawImage(getSpriteById(id), x * 32, y * 32, null);
+        }
       }
     }
   }
