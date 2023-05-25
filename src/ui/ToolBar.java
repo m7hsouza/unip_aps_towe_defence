@@ -1,28 +1,38 @@
 package ui;
 
-import helpz.LoadSave;
-import objects.Tile;
-import scenes.Editing;
-
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import helpz.LoadSave;
+import objects.Tile;
+import scenes.Editing;
+
 import static main.GameStates.MENU;
 import static main.GameStates.setGameState;
+import static helpz.Constants.App.SIZE_TILE;
 
 public class ToolBar extends Bar {
+  
   private Editing editing;
-  private MyButton bMenu, bSave;
+
   private Map<MyButton, ArrayList<Tile>> map = new HashMap<MyButton, ArrayList<Tile>>();
+
+  private MyButton bMenu, bSave;
   private MyButton bGrass, bWater, bRoad;
   private MyButton bPathStart, bPathEnd;
+
   private BufferedImage pathStart, pathEnd;
+
   private MyButton currentButton;
+
   private int currentIndex = 0;
+
   private Tile selectedTile;
+
    public ToolBar(int x, int y, int width, int height, Editing editing) {
     super(x, y, width, height);
 
@@ -33,8 +43,8 @@ public class ToolBar extends Bar {
 
   private void initPathImages() {
      BufferedImage atlas = LoadSave.getSpriteAtlas();
-     pathStart = atlas.getSubimage(7 * 32, 2 * 32, 32, 32);
-     pathEnd = atlas.getSubimage(8 * 32, 2 * 32, 32 ,32);
+     pathStart = atlas.getSubimage(7 * SIZE_TILE, 2 * SIZE_TILE, SIZE_TILE, SIZE_TILE);
+     pathEnd = atlas.getSubimage(8 * SIZE_TILE, 2 * SIZE_TILE, SIZE_TILE ,SIZE_TILE);
   }
 
   private void initButtons() {

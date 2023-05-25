@@ -4,7 +4,7 @@ import main.Game;
 
 import java.awt.*;
 
-public class Settings extends GameScene implements SceneMethods {
+public class Settings extends GameScene {
   public Settings(Game game) {
     super(game);
   }

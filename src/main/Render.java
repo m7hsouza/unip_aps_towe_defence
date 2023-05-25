@@ -1,6 +1,6 @@
 package main;
 
-import java.awt.*;
+import java.awt.Graphics;
 
 public class Render {
   private final Game game;

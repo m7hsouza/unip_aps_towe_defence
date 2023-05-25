@@ -9,13 +9,15 @@ import javax.swing.JFrame;
 public class Game extends JFrame implements Runnable {
   private GameScreen gameScreen;
 
-  // Classes
   private Render render;
+    
   private Menu menu;
   private Playing playing;
   private Settings settings;
   private Editing editing;
+
   private TileManager tileManager;
+  
   public Game() {
     createDefaultLevel();
     initClasses();
@@ -87,19 +89,15 @@ public class Game extends JFrame implements Runnable {
 
   private void updateGame() {
     switch (GameStates.gameStates) {
-      case PLAYING -> {
-        playing.update();
-      }
-      case MENU, SETTINGS -> {
-      }
-      case EDITING -> {
-        editing.update();
-      }
+      case PLAYING -> playing.update();
+      case EDITING -> editing.update();
+      case MENU, SETTINGS -> {}
+      default -> throw new IllegalArgumentException("Unexpected value: " + GameStates.gameStates);
     }
   }
 
   private void createDefaultLevel() {
-    int[] arr = new int[400];
+    int[] arr = new int[helpz.Constants.App.AMOUNT_OF_TILES];
     for (int i : arr) {
       arr[i] = 0;
     }

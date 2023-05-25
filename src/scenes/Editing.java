@@ -12,8 +12,10 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import static helpz.Constants.Tiles.*;
+import static helpz.Constants.App;
+import static helpz.Constants.App.SIZE_TILE;
 
-public class Editing extends GameScene implements SceneMethods {
+public class Editing extends GameScene {
   private int[][] level;
   private Tile selectedTile;
   private int mouseX, mouseY, lastTileX, lastTileY;
@@ -24,7 +26,8 @@ public class Editing extends GameScene implements SceneMethods {
   public Editing(Game game) {
     super(game);
 
-    this.toolBar = new ToolBar(0, 480, 640, 140, this);
+    int toolBarY = App.HEIGHT - App.BOTTOM_BAR_HEIGHT;
+    this.toolBar = new ToolBar(0, toolBarY, App.WIDTH, App.BOTTOM_BAR_HEIGHT, this);
     loadDefaultLevel();
   }
 
@@ -38,17 +41,18 @@ public class Editing extends GameScene implements SceneMethods {
 
   private void drawPathPoints(Graphics g) {
     if (start != null) {
-      g.drawImage(toolBar.getPathStart(), start.getxCord() * 32, start.getyCord() * 32, 32, 32, null);
+      g.drawImage(toolBar.getPathStart(), start.getxCord() * SIZE_TILE, start.getyCord() * SIZE_TILE, SIZE_TILE, SIZE_TILE, null);
     }
 
     if (end != null) {
-      g.drawImage(toolBar.getPathEnd(), end.getxCord() * 32, end.getyCord() * 32, 32, 32, null);
+      g.drawImage(toolBar.getPathEnd(), end.getxCord() * SIZE_TILE, end.getyCord() * SIZE_TILE, SIZE_TILE, SIZE_TILE, null);
     }
   }
 
   @Override
   public void mouseClicked(int x, int y) {
-    if(y > 480) {
+    int toolBarY = App.HEIGHT - App.BOTTOM_BAR_HEIGHT;
+    if(y > toolBarY) {
       toolBar.mouseClicked(x, y);
     } else {
       changeTile(mouseX, mouseY);
@@ -57,13 +61,14 @@ public class Editing extends GameScene implements SceneMethods {
 
   @Override
   public void mouseMoved(int x, int y) {
-    if(y > 480) {
+    int toolBarY = App.HEIGHT - App.BOTTOM_BAR_HEIGHT;
+    if(y > toolBarY) {
       toolBar.mouseMoved(x, y);
       drawSelected = false;
     } else {
       drawSelected = true;
-      mouseX = (x / 32) * 32;
-      mouseY = (y / 32) * 32;
+      mouseX = (x / SIZE_TILE) * SIZE_TILE;
+      mouseY = (y / SIZE_TILE) * SIZE_TILE;
     }
   }
 
@@ -80,7 +85,8 @@ public class Editing extends GameScene implements SceneMethods {
 
   @Override
   public void mouseDragged(int x, int y) {
-    if (y <= 480) {
+    int toolBarY = App.HEIGHT - App.BOTTOM_BAR_HEIGHT;
+    if (y <= toolBarY) {
       changeTile(x, y);
     }
   }
@@ -117,9 +123,9 @@ public class Editing extends GameScene implements SceneMethods {
       for (int x = 0; x < level[0].length; x++) {
         int id = level[y][x];
         if (isAnimation(id)) {
-          g.drawImage(getSpriteById(id, animationIndex), x * 32, y * 32, 32, 32, null);
+          g.drawImage(getSpriteById(id, animationIndex), x * SIZE_TILE, y * SIZE_TILE, SIZE_TILE, SIZE_TILE, null);
         } else
-          g.drawImage(getSpriteById(id), x * 32, y * 32, 32, 32, null);
+          g.drawImage(getSpriteById(id), x * SIZE_TILE, y * SIZE_TILE, SIZE_TILE, SIZE_TILE, null);
       }
     }
   }
@@ -138,14 +144,14 @@ public class Editing extends GameScene implements SceneMethods {
 
   private void drawSelectedTile(Graphics g) {
     if (selectedTile != null && drawSelected) {
-      g.drawImage(selectedTile.getSprite(), mouseX, mouseY, 32, 32, null);
+      g.drawImage(selectedTile.getSprite(), mouseX, mouseY, SIZE_TILE, SIZE_TILE, null);
     }
   }
 
   private void changeTile(int x, int y) {
     if (selectedTile != null) {
-      int tileX = x / 32;
-      int tileY = y / 32;
+      int tileX = x / SIZE_TILE;
+      int tileY = y / SIZE_TILE;
 
       if (selectedTile.getId() >= 0) {
         if (lastTileX == tileX && lastTileY == tileY) return;

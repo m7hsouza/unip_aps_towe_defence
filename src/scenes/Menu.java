@@ -6,7 +6,7 @@ import main.Game;
 import ui.MyButton;
 import static main.GameStates.*;
 
-public class Menu extends GameScene implements SceneMethods {
+public class Menu extends GameScene {
   private MyButton bPlaying, bEdit, bSettings, bQuit;
   public Menu(Game game) {
      super(game);

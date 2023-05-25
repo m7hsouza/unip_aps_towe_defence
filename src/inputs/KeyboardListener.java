@@ -1,7 +1,6 @@
 package inputs;
 
 import main.Game;
-import scenes.GameScene;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -26,6 +25,8 @@ public class KeyboardListener implements KeyListener {
     switch (gameStates) {
       case EDITING -> game.getEditing().keyPressed(e);
       case PLAYING -> game.getPlaying().keyPressed(e);
+      case MENU, SETTINGS -> {}
+      default -> throw new IllegalArgumentException("Unexpected value: " + gameStates);
     }
   }
 

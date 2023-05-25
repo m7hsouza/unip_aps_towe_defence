@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import static helpz.Constants.Towers.*;
 import static helpz.Constants.Projectiles.*;
+import static helpz.Constants.App.SIZE_TILE;
 
 public class ProjectileManager {
   private Playing playing;
@@ -32,7 +33,7 @@ public class ProjectileManager {
     BufferedImage atlas = LoadSave.getSpriteAtlas();
     projectileSprites = new BufferedImage[3];
     for (int i = 0; i < 3; i++) {
-      projectileSprites[i] = atlas.getSubimage((7 + i) * 32, 32, 32, 32);
+      projectileSprites[i] = atlas.getSubimage((7 + i) * SIZE_TILE, SIZE_TILE, SIZE_TILE, SIZE_TILE);
     }
     loadExplosionSprites(atlas);
   }
@@ -40,7 +41,7 @@ public class ProjectileManager {
   private void loadExplosionSprites(BufferedImage atlas) {
     explosionSprites = new BufferedImage[7];
     for (int i = 0; i < 7; i++) {
-      explosionSprites[i] = atlas.getSubimage(i * 32, 64, 32, 32);
+      explosionSprites[i] = atlas.getSubimage(i * SIZE_TILE, 64, SIZE_TILE, SIZE_TILE);
     }
   }
 

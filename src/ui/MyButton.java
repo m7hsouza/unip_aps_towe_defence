@@ -3,6 +3,14 @@ package ui;
 import java.awt.*;
 
 public class MyButton {
+  public final int x, y, width, height, id;
+
+  private String text;
+  
+  private Rectangle bounds;
+
+  private boolean mouseOver, mousePressed;
+
   public MyButton(String text, int x, int y, int width, int height) {
     this.text = text;
     this.x = x;
@@ -24,11 +32,6 @@ public class MyButton {
 
     initBounds();
   }
-
-  public final int x, y, width, height, id;
-  private String text;
-  private Rectangle bounds;
-  private boolean mouseOver, mousePressed;
 
   private void initBounds() {
     this.bounds = new Rectangle(x, y, width, height);

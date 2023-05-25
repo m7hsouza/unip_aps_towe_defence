@@ -5,6 +5,7 @@ import helpz.Constants;
 import java.awt.Rectangle;
 
 import static helpz.Constants.Direction.*;
+import static helpz.Constants.App.SIZE_TILE;
 
 public abstract class Enemy {
   protected float x, y;
@@ -20,7 +21,7 @@ public abstract class Enemy {
     this.y = y;
     this.ID = ID;
     this.enemyType = enemyType;
-    this.bounds = new Rectangle((int) x,(int) y, 32, 32);
+    this.bounds = new Rectangle((int) x,(int) y, SIZE_TILE, SIZE_TILE);
     lastDirection = -1;
     setStartHealth();
   }

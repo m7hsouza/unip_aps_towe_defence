@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import static helpz.Constants.Direction.*;
 import static helpz.Constants.Tiles.*;
 import static helpz.Constants.Enemies.*;
+import static helpz.Constants.App.SIZE_TILE;;
 
 public class EnemyManager {
   private final Playing playing;
@@ -36,8 +37,8 @@ public class EnemyManager {
   }
 
   public void addNewEnemy(int type) {
-    int x = start.getxCord() * 32;
-    int y = start.getyCord() * 32;
+    int x = start.getxCord() * SIZE_TILE;
+    int y = start.getyCord() * SIZE_TILE;
 
     switch (type) {
       case GARBAGE_BAG -> enemies.add(new GarbageBag(x, y, ++enemyCounter));
@@ -50,7 +51,7 @@ public class EnemyManager {
     BufferedImage atlas = LoadSave.getSpriteAtlas();
 
     for (int i = 0; i < 3; i++) {
-      enemyImages[i] = atlas.getSubimage(0, (i + 3) * 32, 32, 32);
+      enemyImages[i] = atlas.getSubimage(0, (i + 3) * SIZE_TILE, SIZE_TILE, SIZE_TILE);
     }
   }
 
@@ -79,8 +80,8 @@ public class EnemyManager {
   private void setNewDirectionAndMove(Enemy enemy) {
     int direction = enemy.getLastDirection();
 
-    int xCord = (int) (enemy.getX() / 32);
-    int yCord = (int) (enemy.getY() / 32);
+    int xCord = (int) (enemy.getX() / SIZE_TILE);
+    int yCord = (int) (enemy.getY() / SIZE_TILE);
 
     fixEnemyOffsetTile(enemy, direction, xCord, yCord);
 
@@ -114,12 +115,12 @@ public class EnemyManager {
         break;
     }
 
-    e.setPosition(xCord * 32, yCord * 32);
+    e.setPosition(xCord * SIZE_TILE, yCord * SIZE_TILE);
 
   }
 
   private boolean isAtEnd(Enemy enemy) {
-    if (enemy.getX() == end.getxCord() * 32 && enemy.getY() == end.getyCord() * 32) {
+    if (enemy.getX() == end.getxCord() * SIZE_TILE && enemy.getY() == end.getyCord() * SIZE_TILE) {
       return true;
     }
     return false;
@@ -133,7 +134,7 @@ public class EnemyManager {
     if (direction == LEFT) {
       return -GetEnemySpeed(enemyType);
     } else if (direction == RIGHT) {
-      return GetEnemySpeed(enemyType) + 32;
+      return GetEnemySpeed(enemyType) + SIZE_TILE;
     }
     return 0;
   }
@@ -142,7 +143,7 @@ public class EnemyManager {
     if (direction == UP) {
       return -GetEnemySpeed(enemyType);
     } else if (direction == DOWN) {
-      return GetEnemySpeed(enemyType) + 32;
+      return GetEnemySpeed(enemyType) + SIZE_TILE;
     }
     return 0;
   }

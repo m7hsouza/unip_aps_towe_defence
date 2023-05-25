@@ -1,8 +1,7 @@
 package helpz;
 
-import objects.PathPoint;
-
 import javax.imageio.ImageIO;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +9,10 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import objects.PathPoint;
+
+import static helpz.Constants.App.*;
 
 public class LoadSave {
 
@@ -69,7 +72,7 @@ public class LoadSave {
     File levelFile = new File(String.format("resources/%s.txt", filename));
     if (levelFile.exists()) {
       ArrayList<Integer> list = ReadFromFile(levelFile);
-      return Utilz.ArrayListTo2DInt(list, 20, 20);
+      return Utilz.ArrayListTo2DInt(list, QUANTITY_OF_COLUMNS, QUANTITY_OF_ROWS);
     } else {
       System.out.printf("File: %s does not exists! ", filename);
       return null;
@@ -95,8 +98,8 @@ public class LoadSave {
     if (levelFile.exists()) {
       ArrayList<Integer> list = ReadFromFile(levelFile);
       ArrayList<PathPoint> points = new ArrayList<>();
-      points.add(new PathPoint(list.get(400), list.get(401)));
-      points.add(new PathPoint(list.get(402), list.get(403)));
+      points.add(new PathPoint(list.get(AMOUNT_OF_TILES), list.get(AMOUNT_OF_TILES + 1)));
+      points.add(new PathPoint(list.get(AMOUNT_OF_TILES + 2), list.get(AMOUNT_OF_TILES + 3)));
       return points;
     } else {
       System.out.printf("File: %s does not exists! ", filename);

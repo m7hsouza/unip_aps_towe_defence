@@ -2,13 +2,17 @@ package objects;
 
 import static helpz.Constants.Towers;
 public class Tower {
+  private final int ID;
+
   private final int x;
   private final int y;
-  private final int ID;
-  private final int towerType;
-  private float range, damage, coolDown;
-  private int coolDownTick;
 
+  private final int towerType;
+  
+  private float range, damage, coolDown;
+
+  private int coolDownTick;
+  
   public Tower(int x, int y, int ID, int towerType) {
     this.x = x;
     this.y = y;
@@ -30,6 +34,26 @@ public class Tower {
 
   private void setDefaultCoolDown() {
     coolDown = Towers.GetStartCoolDown(towerType);
+  }
+
+  public void setRange(float range) {
+    this.range = range;
+  }
+
+  public void setDamage(float damage) {
+    this.damage = damage;
+  }
+
+  public void setCoolDown(float coolDown) {
+    this.coolDown = coolDown;
+  }
+  
+  public void resetCoolDown() {
+    coolDownTick = 0;
+  }
+
+  public void update() {
+    coolDownTick++;
   }
 
   public int getX() {
@@ -60,27 +84,7 @@ public class Tower {
     return coolDown;
   }
 
-  public void setRange(float range) {
-    this.range = range;
-  }
-
-  public void setDamage(float damage) {
-    this.damage = damage;
-  }
-
-  public void setCoolDown(float coolDown) {
-    this.coolDown = coolDown;
-  }
-
   public boolean isCoolDownOver() {
     return coolDownTick >= coolDown;
-  }
-
-  public void resetCoolDown() {
-    coolDownTick = 0;
-  }
-
-  public void update() {
-    coolDownTick++;
   }
 }

@@ -2,6 +2,19 @@ package helpz;
 
 public abstract class Constants {
 
+  public static abstract class App {
+    public static int SIZE_TILE = 32;
+    public static int QUANTITY_OF_COLUMNS = 20;
+    public static int QUANTITY_OF_ROWS = 20;
+  
+    public static int BOTTOM_BAR_HEIGHT = 140;
+
+    public static int AMOUNT_OF_TILES = QUANTITY_OF_COLUMNS * QUANTITY_OF_ROWS;
+    public static int WIDTH = 640;
+    public static int HEIGHT = 620;
+
+    public static float ANIMATION_SPEED = 16;
+  }
   public static abstract class Projectiles {
     public static final int ARROW = 0;
     public static final int CHAINS = 1;

@@ -9,13 +9,16 @@ import java.awt.image.BufferedImage;
 import static main.GameStates.MENU;
 import static main.GameStates.setGameState;
 import static helpz.Constants.Towers.GetName;
+import static helpz.Constants.App.SIZE_TILE;
 
 public class ActionBar extends Bar {
-  private Playing playing;
+  private final Playing playing;
   private MyButton bMenu;
+
   private MyButton[] towerButtons;
-  private Tower selectedTower;
-  private Tower displayedTower;
+
+  private Tower selectedTower, displayedTower;
+
   public ActionBar(int x, int y, int width, int height, Playing playing) {
     super(x, y, width, height);
     this.playing = playing;
@@ -77,7 +80,7 @@ public class ActionBar extends Bar {
 
   private void drawDisplayedTowerBorder(Graphics g) {
     g.setColor(Color.CYAN);
-    g.drawRect(displayedTower.getX(), displayedTower.getY(), 32, 32);
+    g.drawRect(displayedTower.getX(), displayedTower.getY(), SIZE_TILE, SIZE_TILE);
   }
 
   private void drawButtons(Graphics g) {

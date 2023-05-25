@@ -10,6 +10,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import static helpz.Constants.App.SIZE_TILE;
+
 public class TowerManager {
   private Playing playing;
   private BufferedImage[] towerImages;
@@ -25,7 +27,7 @@ public class TowerManager {
     BufferedImage atlas = LoadSave.getSpriteAtlas();
     towerImages = new BufferedImage[3];
     for (int i = 0; i < 3; i++) {
-      towerImages[i] = atlas.getSubimage((4 + i) * 32, 32, 32, 32);
+      towerImages[i] = atlas.getSubimage((4 + i) * SIZE_TILE, SIZE_TILE, SIZE_TILE, SIZE_TILE);
     }
   }
 

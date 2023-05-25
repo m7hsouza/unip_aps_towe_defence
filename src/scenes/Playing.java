@@ -14,9 +14,12 @@ import managers.TowerManager;
 import objects.PathPoint;
 import objects.Tower;
 import ui.ActionBar;
-import static helpz.Constants.Tiles.ROAD_TILE;
+import helpz.Constants.App;
 
-public class Playing extends GameScene implements SceneMethods {
+import static helpz.Constants.Tiles.ROAD_TILE;
+import static helpz.Constants.App.SIZE_TILE;
+
+public class Playing extends GameScene {
   private int[][] level;
   private final ActionBar actionBar;
   private int mouseX, mouseY;
@@ -30,7 +33,8 @@ public class Playing extends GameScene implements SceneMethods {
     super(game);
 
     loadDefaultLevel();
-    actionBar = new ActionBar(0, 480, 640, 100, this);
+    int toolBarY = App.HEIGHT - App.BOTTOM_BAR_HEIGHT;
+    actionBar = new ActionBar(0, toolBarY, App.WIDTH, App.BOTTOM_BAR_HEIGHT, this);
 
     enemyManager = new EnemyManager(this, start, end);
     towerManager = new TowerManager(this);
@@ -49,7 +53,7 @@ public class Playing extends GameScene implements SceneMethods {
 
   private void drawHighlight(Graphics g) {
     g.setColor(Color.PINK);
-    g.drawRect(mouseX, mouseY, 32, 32);
+    g.drawRect(mouseX, mouseY, SIZE_TILE, SIZE_TILE);
   }
 
   private void drawSelectedTower(Graphics g) {
@@ -61,7 +65,8 @@ public class Playing extends GameScene implements SceneMethods {
 
   @Override
   public void mouseClicked(int x, int y) {
-    if(y >= 480) {
+    int toolBarY = App.HEIGHT - App.BOTTOM_BAR_HEIGHT;
+    if(y >= toolBarY) {
       actionBar.mouseClicked(x, y);
     } else
       if (selectedTower != null) {
@@ -80,30 +85,33 @@ public class Playing extends GameScene implements SceneMethods {
   }
 
   private boolean isTileRoad() {
-    int id = level[mouseY / 32][mouseX / 32];
+    int id = level[mouseY / SIZE_TILE][mouseX / SIZE_TILE];
     int type = game.getTileManager().getTile(id).getType();
     return type == ROAD_TILE;
   }
 
   @Override
   public void mouseMoved(int x, int y) {
-    if(y > 480) {
+    int toolBarY = App.HEIGHT - App.BOTTOM_BAR_HEIGHT;
+    if(y >= toolBarY) {
       actionBar.mouseMoved(x, y);
     } else {
-       mouseX = (x / 32) * 32;
-      mouseY = (y / 32) * 32;
+       mouseX = (x / SIZE_TILE) * SIZE_TILE;
+      mouseY = (y / SIZE_TILE) * SIZE_TILE;
     }
   }
 
   @Override
   public void mousePressed(int x, int y) {
-    if(y > 480) {
+    int toolBarY = App.HEIGHT - App.BOTTOM_BAR_HEIGHT;
+    if(y >= toolBarY) {
       actionBar.mousePressed(x, y);
     }
   }
   @Override
   public void mouseReleased(int x, int y) {
-    if(y > 480) {
+    int toolBarY = App.HEIGHT - App.BOTTOM_BAR_HEIGHT;
+    if(y >= toolBarY) {
       actionBar.mouseReleased(x, y);
     }
   }
@@ -138,9 +146,9 @@ public class Playing extends GameScene implements SceneMethods {
         if (y < 15) {
           int id = level[y][x];
           if (isAnimation(id)) {
-            g.drawImage(getSpriteById(id, animationIndex), x * 32, y * 32, null);
+            g.drawImage(getSpriteById(id, animationIndex), x * SIZE_TILE, y * SIZE_TILE, null);
           } else
-            g.drawImage(getSpriteById(id), x * 32, y * 32, null);
+            g.drawImage(getSpriteById(id), x * SIZE_TILE, y * SIZE_TILE, null);
         }
       }
     }
@@ -158,12 +166,12 @@ public class Playing extends GameScene implements SceneMethods {
   }
 
   public int getTileType(int x, int y) {
-    int xCord = x / 32;
-    int yCord = y / 32;
+    int xCord = x / SIZE_TILE;
+    int yCord = y / SIZE_TILE;
     if (xCord < 0 || xCord > 19) return 0;
     if (yCord < 0 || yCord > 14) return 0;
 
-    int id = level[y / 32][x / 32];
+    int id = level[y / SIZE_TILE][x / SIZE_TILE];
     return game.getTileManager().getTile(id).getType();
   }
 

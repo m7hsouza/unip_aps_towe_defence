@@ -3,6 +3,8 @@ package ui;
 import java.awt.*;
 
 public class Bar {
+  protected final int x, y, width, height;
+
   public Bar(int x, int y, int width, int height) {
     this.x = x;
     this.y = y;
@@ -10,20 +12,15 @@ public class Bar {
     this.height = height;
   }
 
-  protected int x, y, width, height;
+  protected void drawButtonFeedback(Graphics g, MyButton button) {
+    g.setColor(button.isMouseOver() ? Color.BLACK : Color.GRAY);
 
-  protected void drawButtonFeedback(Graphics g, MyButton b) {
-    // MouseOver
-    g.setColor(b.isMouseOver() ? Color.BLACK : Color.GRAY);
+    g.drawRect(button.x, button.y, button.width, button.height);
+    g.drawRect(button.x - 1, button.y - 1, button.width + 2, button.height + 2);
 
-    // Border
-    g.drawRect(b.x, b.y, b.width, b.height);
-    g.drawRect(b.x - 1, b.y - 1, b.width + 2, b.height + 2);
-
-    // MousePressed
-    if (b.isMousePressed()) {
-      g.drawRect(b.x + 1, b.y + 1, b.width - 2, b.height - 2);
-      g.drawRect(b.x + 2, b.y + 2, b.width - 4, b.height - 4);
+    if (button.isMousePressed()) {
+      g.drawRect(button.x + 1, button.y + 1, button.width - 2, button.height - 2);
+      g.drawRect(button.x + 2, button.y + 2, button.width - 4, button.height - 4);
     }
   }
 

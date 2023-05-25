@@ -6,7 +6,9 @@ import objects.Tile;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
 import static helpz.Constants.Tiles.*;
+import static helpz.Constants.App.SIZE_TILE;
 
 public class TileManager {
   public TileManager() {
@@ -67,7 +69,7 @@ public class TileManager {
   }
 
   private BufferedImage getSprite(int xCord, int yCord) {
-    return atlas.getSubimage(xCord * 32, yCord * 32, 32, 32);
+    return atlas.getSubimage(xCord * SIZE_TILE, yCord * SIZE_TILE, SIZE_TILE, SIZE_TILE);
   }
 
   private BufferedImage[] getAnimationSpite(int xCord, int yCord) {
