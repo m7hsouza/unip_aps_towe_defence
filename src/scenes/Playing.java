@@ -37,7 +37,7 @@ public class Playing extends GameScene {
     projectileManager = new ProjectileManager(this);
     waveManager = new WaveManager(this);
   }
-  
+
   private int[][] level;
   
   private int mouseX, mouseY;
@@ -173,9 +173,43 @@ public class Playing extends GameScene {
 
   public void update() {
     updateTick();
+    waveManager.update();
+
+    if (isAllEnemiesDead()) {
+      if (waveManager.isThereMoreWaves()) {
+        waveManager.setStartWaveTimer();
+
+        if (waveManager.isWaveTimerOver())
+          waveManager.increaseWaveIndex();
+          waveManager.resetEnemyIndex();
+          enemyManager.getEnemies().clear();
+      }
+    }
+
+    if (isTimeForNewEnemy()) spawnEnemy();
+
     enemyManager.update();
     towerManager.update();
     projectileManager.update();
+  }
+
+  
+  private boolean isAllEnemiesDead() {
+    if (waveManager.isThereMoreEnemiesInWave()) return false;
+    
+    for (Enemy enemy : enemyManager.getEnemies()) {
+      if (enemy.isAlive()) return false;
+    }
+    return true;
+  }
+
+  private void spawnEnemy() {
+    enemyManager.spawnEnemy(waveManager.getNextEnemy());
+  }
+
+  private boolean isTimeForNewEnemy() {
+    return waveManager.isTimeForNewEnemy()
+      && waveManager.isThereMoreEnemiesInWave();
   }
 
   public void shootEnemy(Tower tower, Enemy enemy) {

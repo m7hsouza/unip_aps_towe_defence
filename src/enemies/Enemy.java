@@ -91,4 +91,9 @@ public abstract class Enemy {
 
     if (health <= 0) alive = false;
   }
+
+  public void kill() {
+    alive = false;
+    health = 0;
+  }
 }

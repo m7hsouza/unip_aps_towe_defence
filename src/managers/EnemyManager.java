@@ -33,7 +33,7 @@ public class EnemyManager {
     loadEnemyImages();
   }
 
-  public void addNewEnemy(int type) {
+  private void addNewEnemy(int type) {
     int x = start.getxCord() * SIZE_TILE;
     int y = start.getyCord() * SIZE_TILE;
 
@@ -42,6 +42,10 @@ public class EnemyManager {
       case PLASTIC_BOTTLE -> enemies.add(new PlasticBottle(x, y, ++enemyCounter));
       case GLASS_BOTTLE -> enemies.add(new GlassBottle(x, y, ++enemyCounter));
     }
+  }
+
+  public void spawnEnemy(int nextEnemy) {
+    addNewEnemy(nextEnemy);
   }
 
   private void loadEnemyImages() {
@@ -53,36 +57,10 @@ public class EnemyManager {
   }
 
   public void update() {
-
-    updateWaveManager();
-
-    if (isTimeForNewEnemy()) {
-      spawnEnemy();
-    }
-
     for (Enemy enemy : enemies) {
       if (enemy.isAlive())
         updateEnemyMove(enemy);
     }
-  }
-
-  private void updateWaveManager() {
-    playing.getWaveManager().update();
-  }
-
-  private void spawnEnemy() {
-    addNewEnemy(playing.getWaveManager().getNextEnemy());
-  }
-
-  private boolean isTimeForNewEnemy() {
-    WaveManager waveManager = playing.getWaveManager();
-    if (waveManager.isTimeForNewEnemy()) {
-      if (waveManager.isThereMoreEnemiesInWave()) {
-        return true;
-      }
-    }
-
-    return false;
   }
 
   private void updateEnemyMove(Enemy enemy) {
@@ -94,7 +72,7 @@ public class EnemyManager {
     if (getTileType(newX, newY) == WATER_TILE) {
       enemy.move(GetEnemySpeed(enemy.getEnemyType()), enemy.getLastDirection());
     } else if (isAtEnd(enemy)) {
-
+      enemy.kill();
     } else {
       setNewDirectionAndMove(enemy);
     }
