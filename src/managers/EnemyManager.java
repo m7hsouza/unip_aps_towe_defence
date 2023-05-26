@@ -51,9 +51,9 @@ public class EnemyManager {
   private void loadEnemyImages() {
     BufferedImage atlas = LoadSave.getSpriteAtlas();
 
-    for (int i = 0; i < 3; i++) {
-      enemyImages[i] = atlas.getSubimage(0, (i + 3) * SIZE_TILE, SIZE_TILE, SIZE_TILE);
-    }
+    enemyImages[0] = atlas.getSubimage(0, 4 * SIZE_TILE, SIZE_TILE, SIZE_TILE);
+    enemyImages[1] = atlas.getSubimage(0, 5 * SIZE_TILE, SIZE_TILE, SIZE_TILE);
+    enemyImages[2] = atlas.getSubimage(0, 3 * SIZE_TILE, SIZE_TILE, SIZE_TILE);
   }
 
   public void update() {
@@ -177,4 +177,13 @@ public class EnemyManager {
   public ArrayList<Enemy> getEnemies() {
     return enemies;
   }
+
+  public int getAmountOfAliveEnemies() {
+		int size = 0;
+		for (Enemy e : enemies)
+			if (e.isAlive())
+				size++;
+
+		return size;
+	}
 }

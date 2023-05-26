@@ -176,15 +176,15 @@ public class Playing extends GameScene {
     waveManager.update();
 
     if (isAllEnemiesDead()) {
-      if (waveManager.isThereMoreWaves()) {
-        waveManager.setStartWaveTimer();
-
-        if (waveManager.isWaveTimerOver())
-          waveManager.increaseWaveIndex();
-          waveManager.resetEnemyIndex();
-          enemyManager.getEnemies().clear();
-      }
-    }
+			if (waveManager.isThereMoreWaves()) {
+				waveManager.startWaveTimer();
+				if (waveManager.isWaveTimerOver()) {
+					waveManager.increaseWave();
+					enemyManager.getEnemies().clear();
+					waveManager.resetEnemyIndex();
+				}
+			}
+		}
 
     if (isTimeForNewEnemy()) spawnEnemy();
 

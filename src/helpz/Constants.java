@@ -42,9 +42,9 @@ public abstract class Constants {
     public static final int WATER_TILE = 2;
   }
   public static abstract class Enemies {
-    public static final int GARBAGE_BAG = 0;
-    public static final int PLASTIC_BOTTLE = 1;
-    public static final int GLASS_BOTTLE = 2;
+    public static final int GARBAGE_BAG = 2;
+    public static final int PLASTIC_BOTTLE = 0;
+    public static final int GLASS_BOTTLE = 1;
 
     public static float GetEnemySpeed(int enemyType) {
       float speed = 0;
