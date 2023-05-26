@@ -5,29 +5,25 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import enemies.Enemy;
-import helpz.LoadSave;
-import main.Game;
-import managers.EnemyManager;
-import managers.ProjectileManager;
-import managers.TowerManager;
-import objects.PathPoint;
-import objects.Tower;
-import ui.ActionBar;
 import helpz.Constants.App;
+import helpz.LoadSave;
 
 import static helpz.Constants.Tiles.ROAD_TILE;
 import static helpz.Constants.App.SIZE_TILE;
 
+import main.Game;
+import enemies.Enemy;
+import ui.ActionBar;
+
+import objects.Tower;
+import objects.PathPoint;
+
+import managers.EnemyManager;
+import managers.ProjectileManager;
+import managers.TowerManager;
+import managers.WaveManager;
+
 public class Playing extends GameScene {
-  private int[][] level;
-  private final ActionBar actionBar;
-  private int mouseX, mouseY;
-  private final EnemyManager enemyManager;
-  private final TowerManager towerManager;
-  private final ProjectileManager projectileManager;
-  private PathPoint start, end;
-  private Tower selectedTower;
 
   public Playing(Game game) {
     super(game);
@@ -39,18 +35,25 @@ public class Playing extends GameScene {
     enemyManager = new EnemyManager(this, start, end);
     towerManager = new TowerManager(this);
     projectileManager = new ProjectileManager(this);
+    waveManager = new WaveManager(this);
   }
-  @Override
-  public void render(Graphics g) {
-    drawLevel(g);
-    actionBar.draw(g);
-    enemyManager.draw(g);
-    towerManager.draw(g);
-    projectileManager.draw(g);
-    drawSelectedTower(g);
-    drawHighlight(g);
-  }
+  
+  private int[][] level;
+  
+  private int mouseX, mouseY;
+  
+  private final ActionBar actionBar;
+  
+  private PathPoint start, end;
+  
+  private Tower selectedTower;
 
+  private final EnemyManager enemyManager;
+  private final TowerManager towerManager;
+  private final ProjectileManager projectileManager;
+  private final WaveManager waveManager;
+
+  
   private void drawHighlight(Graphics g) {
     g.setColor(Color.PINK);
     g.drawRect(mouseX, mouseY, SIZE_TILE, SIZE_TILE);
@@ -63,23 +66,6 @@ public class Playing extends GameScene {
     }
   }
 
-  @Override
-  public void mouseClicked(int x, int y) {
-    int toolBarY = App.HEIGHT - App.BOTTOM_BAR_HEIGHT;
-    if(y >= toolBarY) {
-      actionBar.mouseClicked(x, y);
-    } else
-      if (selectedTower != null) {
-        if (isTileRoad() && getTowerAt() == null) {
-          towerManager.addTower(selectedTower, mouseX, mouseY);
-          selectedTower = null;
-        }
-      } else {
-        Tower tower = getTowerAt();
-        actionBar.displayTower(tower);
-      }
-  }
-
   private Tower getTowerAt() {
     return towerManager.getTowerAt(mouseX, mouseY);
   }
@@ -90,47 +76,6 @@ public class Playing extends GameScene {
     return type == ROAD_TILE;
   }
 
-  @Override
-  public void mouseMoved(int x, int y) {
-    int toolBarY = App.HEIGHT - App.BOTTOM_BAR_HEIGHT;
-    if(y >= toolBarY) {
-      actionBar.mouseMoved(x, y);
-    } else {
-       mouseX = (x / SIZE_TILE) * SIZE_TILE;
-      mouseY = (y / SIZE_TILE) * SIZE_TILE;
-    }
-  }
-
-  @Override
-  public void mousePressed(int x, int y) {
-    int toolBarY = App.HEIGHT - App.BOTTOM_BAR_HEIGHT;
-    if(y >= toolBarY) {
-      actionBar.mousePressed(x, y);
-    }
-  }
-  @Override
-  public void mouseReleased(int x, int y) {
-    int toolBarY = App.HEIGHT - App.BOTTOM_BAR_HEIGHT;
-    if(y >= toolBarY) {
-      actionBar.mouseReleased(x, y);
-    }
-  }
-
-  @Override
-  public void mouseDragged(int x, int y) {
-
-  }
-
-  public void setLevel(int[][] level) {
-    this.level = level;
-  }
-
-  public void update() {
-    updateTick();
-    enemyManager.update();
-    towerManager.update();
-    projectileManager.update();
-  }
 
   private void loadDefaultLevel() {
     level = LoadSave.GetLevelData("new_level");
@@ -161,8 +106,80 @@ public class Playing extends GameScene {
   private BufferedImage getSpriteById(int id) {
     return getGame().getTileManager().getSprite(id);
   }
+ 
   private BufferedImage getSpriteById(int id, int animationIndex) {
     return getGame().getTileManager().getAnimationSprite(id, animationIndex);
+  }
+
+  @Override
+  public void render(Graphics g) {
+    drawLevel(g);
+    actionBar.draw(g);
+    enemyManager.draw(g);
+    towerManager.draw(g);
+    projectileManager.draw(g);
+    drawSelectedTower(g);
+    drawHighlight(g);
+  }
+
+  @Override
+  public void mouseClicked(int x, int y) {
+    int toolBarY = App.HEIGHT - App.BOTTOM_BAR_HEIGHT;
+    if(y >= toolBarY) {
+      actionBar.mouseClicked(x, y);
+    } else
+      if (selectedTower != null) {
+        if (isTileRoad() && getTowerAt() == null) {
+          towerManager.addTower(selectedTower, mouseX, mouseY);
+          selectedTower = null;
+        }
+      } else {
+        Tower tower = getTowerAt();
+        actionBar.displayTower(tower);
+      }
+  }
+
+  @Override
+  public void mouseMoved(int x, int y) {
+    int toolBarY = App.HEIGHT - App.BOTTOM_BAR_HEIGHT;
+    if(y >= toolBarY) {
+      actionBar.mouseMoved(x, y);
+    } else {
+       mouseX = (x / SIZE_TILE) * SIZE_TILE;
+      mouseY = (y / SIZE_TILE) * SIZE_TILE;
+    }
+  }
+
+  @Override
+  public void mousePressed(int x, int y) {
+    int toolBarY = App.HEIGHT - App.BOTTOM_BAR_HEIGHT;
+    if(y >= toolBarY) {
+      actionBar.mousePressed(x, y);
+    }
+  }
+  @Override
+  public void mouseReleased(int x, int y) {
+    int toolBarY = App.HEIGHT - App.BOTTOM_BAR_HEIGHT;
+    if(y >= toolBarY) {
+      actionBar.mouseReleased(x, y);
+    }
+  }
+
+  public void keyPressed(KeyEvent e) {
+    if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+      selectedTower = null;
+    }
+  }
+
+  public void update() {
+    updateTick();
+    enemyManager.update();
+    towerManager.update();
+    projectileManager.update();
+  }
+
+  public void shootEnemy(Tower tower, Enemy enemy) {
+    projectileManager.newProjectile(tower, enemy);
   }
 
   public int getTileType(int x, int y) {
@@ -175,25 +192,23 @@ public class Playing extends GameScene {
     return game.getTileManager().getTile(id).getType();
   }
 
-  public TowerManager getTowerManager() {
-    return towerManager;
-  }
-
-  public void setSelectedTower(Tower tower) {
-    this.selectedTower = tower;
-  }
-
-  public void keyPressed(KeyEvent e) {
-    if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-      selectedTower = null;
-    }
-  }
-
   public EnemyManager getEnemyManager() {
     return enemyManager;
   }
 
-  public void shootEnemy(Tower tower, Enemy enemy) {
-    projectileManager.newProjectile(tower, enemy);
+  public TowerManager getTowerManager() {
+    return towerManager;
+  }
+
+  public WaveManager getWaveManager() {
+    return this.waveManager;
+  }
+
+  public void setLevel(int[][] level) {
+    this.level = level;
+  }
+
+  public void setSelectedTower(Tower tower) {
+    this.selectedTower = tower;
   }
 }

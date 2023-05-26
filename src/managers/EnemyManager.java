@@ -29,9 +29,6 @@ public class EnemyManager {
     this.start = start;
     this.end = end;
     enemyImages = new BufferedImage[3];
-    addNewEnemy(GARBAGE_BAG);
-    addNewEnemy(PLASTIC_BOTTLE);
-    addNewEnemy(GLASS_BOTTLE);
 
     loadEnemyImages();
   }
@@ -56,10 +53,36 @@ public class EnemyManager {
   }
 
   public void update() {
+
+    updateWaveManager();
+
+    if (isTimeForNewEnemy()) {
+      spawnEnemy();
+    }
+
     for (Enemy enemy : enemies) {
       if (enemy.isAlive())
         updateEnemyMove(enemy);
     }
+  }
+
+  private void updateWaveManager() {
+    playing.getWaveManager().update();
+  }
+
+  private void spawnEnemy() {
+    addNewEnemy(playing.getWaveManager().getNextEnemy());
+  }
+
+  private boolean isTimeForNewEnemy() {
+    WaveManager waveManager = playing.getWaveManager();
+    if (waveManager.isTimeForNewEnemy()) {
+      if (waveManager.isThereMoreEnemiesInWave()) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   private void updateEnemyMove(Enemy enemy) {
