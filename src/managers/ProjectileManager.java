@@ -17,12 +17,13 @@ import static helpz.Constants.App.SIZE_TILE;
 
 public class ProjectileManager {
   private Playing playing;
+
   private ArrayList<Projectile> projectiles = new ArrayList<>();
+  private ArrayList<Explosion> explosions = new ArrayList<>();
+
   private BufferedImage[] projectileSprites, explosionSprites;
+
   private int amount = 0;
-  private boolean drawExplosion;
-  private int explosionTick, explosionIndex;
-  private Point2D.Float explosionPosition;
 
   public ProjectileManager(Playing playing) {
     this.playing = playing;
@@ -53,20 +54,29 @@ public class ProjectileManager {
         if (isHittingEnemy(projectile)) {
           projectile.setActive(false);
           if (projectile.getType() == BOMB) {
-            drawExplosion = true;
-            explosionPosition = projectile.getPosition();
+            explosions.add(new Explosion(projectile.getPosition()));
+            explosionOnEnemy(projectile);
           }
         }
       }
     }
-    if (drawExplosion) {
-      explosionTick++;
-      if (explosionTick >= 12) {
-        explosionTick = 0;
-        explosionIndex++;
-        if (explosionIndex >= 7) {
-          explosionIndex = 0;
-          drawExplosion = false;
+
+    for (Explosion explosion : explosions)
+      if (explosion.getIndex() < 7) explosion.update();
+  }
+
+  private void explosionOnEnemy(Projectile projectile) {
+    for (Enemy enemy : playing.getEnemyManager().getEnemies()) {
+      if (enemy.isAlive()) {
+        float radius = 40.0f;
+
+        float xDist = Math.abs(projectile.getPosition().x - enemy.getX());
+        float yDist = Math.abs(projectile.getPosition().y - enemy.getY());
+
+        float dist = (float) Math.hypot(xDist, yDist);
+
+        if (dist <= radius) {
+          enemy.hurt(projectile.getDamage());
         }
       }
     }
@@ -74,9 +84,12 @@ public class ProjectileManager {
 
   private boolean isHittingEnemy(Projectile projectile) {
     for (Enemy enemy : playing.getEnemyManager().getEnemies()) {
-      if (enemy.getBounds().contains(projectile.getPosition())) {
-        enemy.hurt(projectile.getDamage());
-        return true;
+      if (enemy.isAlive()) {
+      
+        if (enemy.getBounds().contains(projectile.getPosition())) {
+          enemy.hurt(projectile.getDamage());
+          return true;
+        }
       }
     }
     return false;
@@ -104,9 +117,13 @@ public class ProjectileManager {
   }
 
   private void drawExplosion(Graphics g) {
-    if (drawExplosion) {
-      BufferedImage currentSprite = explosionSprites[explosionIndex];
-      g.drawImage(currentSprite, (int) explosionPosition.x, (int) explosionPosition.y, null);
+    for (Explosion explosion : explosions) {
+      if (explosion.getIndex() < 7) {
+        BufferedImage currentSprite = explosionSprites[explosion.getIndex()];
+        int x = (int) explosion.getPosition().x - SIZE_TILE / 2;
+        int y = (int) explosion.getPosition().y - SIZE_TILE / 2;
+        g.drawImage(currentSprite, x, y, null);
+      }
     }
   }
 
@@ -146,4 +163,30 @@ public class ProjectileManager {
     }
     return type;
   }
+}
+
+class Explosion {
+  private Point2D.Float position;
+  private int explosionTick = 0, explosionIndex = 0;
+
+  public Explosion(Point2D.Float position) {
+    this.position = position;
+  }
+
+  public void update() {
+    explosionTick++;
+    if (explosionTick >= 12) {
+      explosionTick = 0;
+      explosionIndex++;
+    }
+  }
+
+  public Point2D.Float getPosition() {
+    return this.position;
+  }
+
+  public int getIndex() {
+    return this.explosionIndex;
+  }
+
 }

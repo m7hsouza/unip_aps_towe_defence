@@ -23,21 +23,19 @@ public abstract class Constants {
     public static float GetSpeed(int type) {
       float speed = 0;
       switch (type) {
-        case ARROW -> speed = 2f;
-        case BOMB -> speed = 0.5f;
-        case CHAINS -> speed = 1f;
+        case ARROW -> speed = 8f;
+        case BOMB -> speed = 4f;
+        case CHAINS -> speed = 6f;
       }
       return speed;
     }
   }
-
   public static abstract class Direction {
     public static final int LEFT = 0;
     public static final int UP = 1;
     public static final int RIGHT = 2;
     public static final int DOWN = 3;
   }
-
   public static abstract class Tiles {
     public static final int GRASS_TILE = 0;
     public static final int ROAD_TILE = 1;
@@ -81,9 +79,9 @@ public abstract class Constants {
     public static float GetStartDamage(int type) {
       float damge = 0;
       switch (type) {
-        case CANNON -> damge = 0.5f;
-        case ARCHER -> damge = 1f;
-        case WIZARD -> damge = 1.8f;
+        case CANNON -> damge = 10f;
+        case ARCHER -> damge = 5f;
+        case WIZARD -> damge = 2.5f;
       }
       return damge;
     }
@@ -99,9 +97,9 @@ public abstract class Constants {
     public static float GetStartCoolDown(int type) {
       float coolDown = 0;
       switch (type) {
-        case CANNON -> coolDown = 20;
-        case ARCHER -> coolDown = 12;
-        case WIZARD -> coolDown = 10;
+        case CANNON -> coolDown = 60;
+        case ARCHER -> coolDown = 25;
+        case WIZARD -> coolDown = 40;
       }
       return coolDown;
     }
