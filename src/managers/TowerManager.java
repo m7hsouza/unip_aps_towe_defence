@@ -25,8 +25,8 @@ public class TowerManager {
 
   private void loadTowerImages() {
     BufferedImage atlas = LoadSave.getSpriteAtlas();
-    towerImages = new BufferedImage[3];
-    for (int i = 0; i < 3; i++) {
+    towerImages = new BufferedImage[2];
+    for (int i = 0; i < 2; i++) {
       towerImages[i] = atlas.getSubimage((4 + i) * SIZE_TILE, SIZE_TILE, SIZE_TILE, SIZE_TILE);
     }
   }

@@ -73,6 +73,7 @@ public class EnemyManager {
       enemy.move(GetEnemySpeed(enemy.getEnemyType()), enemy.getLastDirection());
     } else if (isAtEnd(enemy)) {
       enemy.kill();
+      playing.gameOver();
     } else {
       setNewDirectionAndMove(enemy);
     }

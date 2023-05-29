@@ -7,11 +7,11 @@ public abstract class Constants {
     public static int QUANTITY_OF_COLUMNS = 20;
     public static int QUANTITY_OF_ROWS = 20;
   
-    public static int BOTTOM_BAR_HEIGHT = 140;
+    public static int BOTTOM_BAR_HEIGHT = 160;
 
     public static int AMOUNT_OF_TILES = QUANTITY_OF_COLUMNS * QUANTITY_OF_ROWS;
     public static int WIDTH = 640;
-    public static int HEIGHT = 620;
+    public static int HEIGHT = 640;
 
     public static float ANIMATION_SPEED = 16;
   }
@@ -56,6 +56,16 @@ public abstract class Constants {
       return speed;
     }
 
+    public static int GetStartGold(int type) {
+      int gold = 0;
+      switch (type) {
+        case GARBAGE_BAG -> gold =  35;
+        case PLASTIC_BOTTLE -> gold = 15;
+        case GLASS_BOTTLE -> gold = 20;
+      }
+      return gold;
+    }
+
     public static float GetStartHealth(int enemyType) {
       float health = 0;
       switch (enemyType) {
@@ -72,16 +82,22 @@ public abstract class Constants {
       switch (type) {
         case CANNON -> name = "Cannon";
         case ARCHER -> name = "Archer";
-        case WIZARD -> name = "Wizard";
       }
       return name;
+    }
+    public static int GetPrice(int type) {
+      int price = 0;
+      switch (type) {
+        case CANNON -> price = 40;
+        case ARCHER -> price = 25;
+      }
+      return price;
     }
     public static float GetStartDamage(int type) {
       float damge = 0;
       switch (type) {
         case CANNON -> damge = 10f;
         case ARCHER -> damge = 5f;
-        case WIZARD -> damge = 2.5f;
       }
       return damge;
     }
@@ -90,7 +106,6 @@ public abstract class Constants {
       switch (type) {
         case CANNON -> range = 100;
         case ARCHER -> range = 100;
-        case WIZARD -> range = 100;
       }
       return range;
     }
@@ -99,12 +114,10 @@ public abstract class Constants {
       switch (type) {
         case CANNON -> coolDown = 60;
         case ARCHER -> coolDown = 25;
-        case WIZARD -> coolDown = 40;
       }
       return coolDown;
     }
     public static final int CANNON = 0;
     public static final int ARCHER = 1;
-    public static final int WIZARD = 2;
   }
 }

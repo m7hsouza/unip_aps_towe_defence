@@ -30,32 +30,20 @@ public class GameScene implements SceneMethods {
   }
 
   @Override
-  public void render(Graphics g) {
-    throw new UnsupportedOperationException("Unimplemented method 'render'");
-  }
+  public void render(Graphics g) {}
 
   @Override
-  public void mouseClicked(int x, int y) {
-    throw new UnsupportedOperationException("Unimplemented method 'mouseClicked'");
-  }
+  public void mouseClicked(int x, int y) {}
 
   @Override
-  public void mouseMoved(int x, int y) {
-    throw new UnsupportedOperationException("Unimplemented method 'mouseMoved'");
-  }
+  public void mouseMoved(int x, int y) {}
 
   @Override
-  public void mousePressed(int x, int y) {
-    throw new UnsupportedOperationException("Unimplemented method 'mousePressed'");
-  }
+  public void mousePressed(int x, int y) {}
 
   @Override
-  public void mouseReleased(int x, int y) {
-    throw new UnsupportedOperationException("Unimplemented method 'mouseReleased'");
-  }
+  public void mouseReleased(int x, int y) {}
 
   @Override
-  public void mouseDragged(int x, int y) {
-    throw new UnsupportedOperationException("Unimplemented method 'mouseDragged'");
-  }
+  public void mouseDragged(int x, int y) {}
 }

@@ -12,6 +12,7 @@ import static helpz.Constants.Tiles.ROAD_TILE;
 import static helpz.Constants.App.SIZE_TILE;
 
 import main.Game;
+import main.GameStates;
 import enemies.Enemy;
 import ui.ActionBar;
 
@@ -76,7 +77,6 @@ public class Playing extends GameScene {
     return type == ROAD_TILE;
   }
 
-
   private void loadDefaultLevel() {
     level = LoadSave.GetLevelData("new_level");
     ArrayList<PathPoint> points = LoadSave.GetLevelPathPoints("new_level");
@@ -131,6 +131,7 @@ public class Playing extends GameScene {
       if (selectedTower != null) {
         if (isTileRoad() && getTowerAt() == null) {
           towerManager.addTower(selectedTower, mouseX, mouseY);
+          actionBar.payForTower(selectedTower);
           selectedTower = null;
         }
       } else {
@@ -193,7 +194,6 @@ public class Playing extends GameScene {
     projectileManager.update();
   }
 
-  
   private boolean isAllEnemiesDead() {
     if (waveManager.isThereMoreEnemiesInWave()) return false;
     
@@ -244,5 +244,13 @@ public class Playing extends GameScene {
 
   public void setSelectedTower(Tower tower) {
     this.selectedTower = tower;
+  }
+
+  public void incrementGold(int gold) {
+    actionBar.incrementGold(gold);
+  }
+
+  public void gameOver() {
+    GameStates.gameStates = GameStates.GAMEOVER;
   }
 }

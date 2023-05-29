@@ -1,6 +1,7 @@
 package objects;
 
 import static helpz.Constants.Towers;
+
 public class Tower {
   private final int ID;
 
@@ -8,6 +9,7 @@ public class Tower {
   private final int y;
 
   private final int towerType;
+  private int level = 1;
   
   private float range, damage, coolDown;
 
@@ -18,6 +20,7 @@ public class Tower {
     this.y = y;
     this.ID = ID;
     this.towerType = towerType;
+
     setDefaultDamage();
     setDefaultRange();
     setDefaultCoolDown();
@@ -82,6 +85,19 @@ public class Tower {
 
   public float getCoolDown() {
     return coolDown;
+  }
+
+  public int getLevel() {
+    return level;
+  }
+
+  public int getPrice() {
+    int price = Towers.GetPrice(towerType);
+    return price + (level - 1) * price / 5;
+  }
+
+  public String getName() {
+    return Towers.GetName(towerType);
   }
 
   public boolean isCoolDownOver() {

@@ -15,6 +15,7 @@ public class Game extends JFrame implements Runnable {
   private Playing playing;
   private Settings settings;
   private Editing editing;
+  private GameOver gameOver;
 
   private TileManager tileManager;
   
@@ -85,13 +86,14 @@ public class Game extends JFrame implements Runnable {
     gameScreen = new GameScreen(this);
     settings = new Settings(this);
     editing = new Editing(this);
+    gameOver = new GameOver(this);
   }
 
   private void updateGame() {
     switch (GameStates.gameStates) {
       case PLAYING -> playing.update();
       case EDITING -> editing.update();
-      case MENU, SETTINGS -> {}
+      case MENU, SETTINGS, GAMEOVER -> {}
       default -> throw new IllegalArgumentException("Unexpected value: " + GameStates.gameStates);
     }
   }
@@ -127,6 +129,10 @@ public class Game extends JFrame implements Runnable {
 
   public TileManager getTileManager() {
     return tileManager;
+  }
+
+  public GameOver getGameOver() {
+    return gameOver;
   }
 
   // Main

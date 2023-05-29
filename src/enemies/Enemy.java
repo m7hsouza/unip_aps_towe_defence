@@ -86,10 +86,16 @@ public abstract class Enemy {
     this.y = y;
   }
 
-  public void hurt(float damage) {
+  public boolean hurt(float damage) {
     this.health -= damage;
 
     if (health <= 0) alive = false;
+
+    return alive;
+  }
+
+  public int getGold() {
+    return helpz.Constants.Enemies.GetStartGold(enemyType);
   }
 
   public void kill() {

@@ -76,7 +76,10 @@ public class ProjectileManager {
         float dist = (float) Math.hypot(xDist, yDist);
 
         if (dist <= radius) {
-          enemy.hurt(projectile.getDamage());
+          boolean enemyIsAlive = enemy.hurt(projectile.getDamage());
+          if (!enemyIsAlive) {
+            playing.incrementGold(enemy.getGold());
+          }
         }
       }
     }
@@ -87,7 +90,10 @@ public class ProjectileManager {
       if (enemy.isAlive()) {
       
         if (enemy.getBounds().contains(projectile.getPosition())) {
-          enemy.hurt(projectile.getDamage());
+          boolean enemyIsAlive = enemy.hurt(projectile.getDamage());
+          if (!enemyIsAlive) {
+            playing.incrementGold(enemy.getGold());
+          }
           return true;
         }
       }
@@ -158,7 +164,6 @@ public class ProjectileManager {
     int type = 0;
     switch (tower.getTowerType()) {
       case ARCHER -> type = ARROW;
-      case WIZARD -> type = CHAINS;
       case CANNON -> type = BOMB;
     }
     return type;
